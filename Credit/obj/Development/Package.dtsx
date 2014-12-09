@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="8"
-  DTS:VersionGUID="{33EFC966-99F4-4F99-A4F3-5510DF58F53D}">
+  DTS:VersionBuild="19"
+  DTS:VersionGUID="{C3E993AF-8BE0-44A5-A2BC-B4E9FE06F610}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -53,7 +53,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{05FF8236-F758-4FFF-BCF5-6C235C044AB4}"
-          SQLTask:SqlStatementSource="delete from Member_Dim;&#xA;delete from Provider_Dim;&#xA;delete from Category_Dim;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="delete from Member_Dim;&#xA;delete from Provider_Dim;&#xA;delete from Category_Dim;&#xA;delete from Time_Dim;&#xA;delete from Payment_Fact;&#xA;delete from Charge_fact;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -1040,23 +1040,1243 @@ on p.region_no = r.region_no;</property>
                 </output>
               </outputs>
             </component>
+            <component
+              refId="Package\Load Dimesions\Time Dim"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Time Dim"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Time_Dim]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Dimesions\Time Dim.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[the_date]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="the_date"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[the_date]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[the_date]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[day_of_week]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="day_of_week"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[day_of_week]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_week]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[month]"
+                      cachedDataType="i4"
+                      cachedName="month"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[month]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[month]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[year]"
+                      cachedDataType="i4"
+                      cachedName="year"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[quarter]"
+                      cachedDataType="i4"
+                      cachedName="quarter"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[quarter]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[quarter]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[day_of_year]"
+                      cachedDataType="i4"
+                      cachedName="day_of_year"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[day_of_year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_year]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[week_of_year]"
+                      cachedDataType="i4"
+                      cachedName="week_of_year"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[week_of_year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[week_of_year]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[holiday]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="holiday"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[holiday]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[holiday]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[weekend]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="weekend"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[weekend]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[weekend]" />
+                    <inputColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].Columns[year_month]"
+                      cachedDataType="wstr"
+                      cachedLength="61"
+                      cachedName="year_month"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[year_month]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year_month]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[time_key]"
+                      dataType="i4"
+                      name="time_key" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[the_date]"
+                      dataType="dbTimeStamp"
+                      name="the_date" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[day_of_week]"
+                      dataType="i4"
+                      name="day_of_week" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[month]"
+                      dataType="i4"
+                      name="month" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[year]"
+                      dataType="i4"
+                      name="year" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[quarter]"
+                      dataType="i4"
+                      name="quarter" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[day_of_year]"
+                      dataType="i4"
+                      name="day_of_year" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[holiday]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="holiday" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[weekend]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="weekend" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[year_month]"
+                      dataType="wstr"
+                      length="70"
+                      name="year_month" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input].ExternalColumns[week_of_year]"
+                      dataType="i4"
+                      name="week_of_year" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Dimesions\Time Dim.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Dim.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Dim.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Dim.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Dim.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Dimesions\Time Source"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Time Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select distinct
+  the_date = min(c.charge_dt),
+  day_of_week = datepart(dw, min(c.charge_dt)),
+  month = datepart(mm, min(c.charge_dt)),
+  year = datepart(yy, min(c.charge_dt)),
+  quarter = datepart(qq, min(c.charge_dt)),
+  day_of_year= datepart(dy, min(c.charge_dt)),
+  week_of_year= datepart(ww, min(c.charge_dt)),
+  holiday = 'N',
+weekend = case datepart(dw, min(c.charge_dt))
+when 1  then 'Y'
+when 7 then 'Y'
+else 'N'
+end,
+year_month = datename(month, min(c.charge_dt)) + '_' + datename(year, min(c.charge_dt))
+from charge c
+where c.charge_dt is not null
+group by datepart(dy, c.charge_dt), datepart(yy, c.charge_dt)
+
+union
+
+select distinct
+  the_date = min(p.payment_dt),
+  day_of_week = datepart(dw, min(p.payment_dt)),
+  month = datepart(mm, min(p.payment_dt)),
+  year = datepart(yy, min(p.payment_dt)),
+  quarter = datepart(qq, min(p.payment_dt)),
+  day_of_year= datepart(dy, min(p.payment_dt)),
+  week_of_year= datepart(ww, min(p.payment_dt)),
+  holiday = 'N',
+weekend = case datepart(dw, min(p.payment_dt))
+when 1  then 'Y'
+when 7 then 'Y'
+else 'N'
+end,
+year_month = datename(month, min(p.payment_dt)) + '_' + datename(year, min(p.payment_dt))
+from payment p
+where p.payment_dt is not null
+group by datepart(dy, p.payment_dt), datepart(yy, p.payment_dt);</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Dimesions\Time Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[the_date]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[the_date]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[the_date]"
+                      name="the_date"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_week]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[day_of_week]"
+                      length="30"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_week]"
+                      name="day_of_week"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[month]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[month]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[month]"
+                      name="month"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year]"
+                      name="year"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[quarter]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[quarter]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[quarter]"
+                      name="quarter"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_year]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[day_of_year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[day_of_year]"
+                      name="day_of_year"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[week_of_year]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[week_of_year]"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[week_of_year]"
+                      name="week_of_year"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[holiday]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[holiday]"
+                      length="1"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[holiday]"
+                      name="holiday"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[weekend]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[weekend]"
+                      length="1"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[weekend]"
+                      name="weekend"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year_month]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[year_month]"
+                      length="61"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].Columns[year_month]"
+                      name="year_month"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[the_date]"
+                      dataType="dbTimeStamp"
+                      name="the_date" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[day_of_week]"
+                      dataType="i4"
+                      name="day_of_week" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[month]"
+                      dataType="i4"
+                      name="month" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[year]"
+                      dataType="i4"
+                      name="year" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[quarter]"
+                      dataType="i4"
+                      name="quarter" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[day_of_year]"
+                      dataType="i4"
+                      name="day_of_year" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[week_of_year]"
+                      dataType="i4"
+                      name="week_of_year" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[holiday]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="holiday" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[weekend]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="weekend" />
+                    <externalMetadataColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output].ExternalColumns[year_month]"
+                      dataType="wstr"
+                      length="61"
+                      name="year_month" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[the_date]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[the_date]"
+                      name="the_date" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[day_of_week]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[day_of_week]"
+                      name="day_of_week" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[month]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[month]"
+                      name="month" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[year]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[year]"
+                      name="year" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[quarter]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[quarter]"
+                      name="quarter" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[day_of_year]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[day_of_year]"
+                      name="day_of_year" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[week_of_year]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[week_of_year]"
+                      name="week_of_year" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[holiday]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[holiday]"
+                      name="holiday" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[weekend]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[weekend]"
+                      name="weekend" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[year_month]"
+                      dataType="wstr"
+                      length="61"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[year_month]"
+                      name="year_month" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
           </components>
           <paths>
             <path
               refId="Package\Load Dimesions.Paths[OLE DB Source Output2]"
-              endId="Package\Load Dimesions\Member Dim.Inputs[OLE DB Destination Input]"
+              endId="Package\Load Dimesions\Category Dim.Inputs[OLE DB Destination Input]"
               name="OLE DB Source Output"
-              startId="Package\Load Dimesions\Member Source.Outputs[OLE DB Source Output]" />
+              startId="Package\Load Dimesions\Category Source.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\Load Dimesions.Paths[OLE DB Source Output1]"
+              refId="Package\Load Dimesions.Paths[OLE DB Source Output3]"
               endId="Package\Load Dimesions\Provider Dim.Inputs[OLE DB Destination Input]"
               name="OLE DB Source Output"
               startId="Package\Load Dimesions\Provider Source.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\Load Dimesions.Paths[OLE DB Source Output]"
-              endId="Package\Load Dimesions\Category Dim.Inputs[OLE DB Destination Input]"
+              endId="Package\Load Dimesions\Member Dim.Inputs[OLE DB Destination Input]"
               name="OLE DB Source Output"
-              startId="Package\Load Dimesions\Category Source.Outputs[OLE DB Source Output]" />
+              startId="Package\Load Dimesions\Member Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Load Dimesions.Paths[OLE DB Source Output1]"
+              endId="Package\Load Dimesions\Time Dim.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Load Dimesions\Time Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Fact"
+      DTS:CreationName="SSIS.Pipeline.3"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{B8AAD8EC-21E3-4F5F-9749-5BB79617A631}"
+      DTS:ExecutableType="SSIS.Pipeline.3"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Fact"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Load Fact\Charge Fact"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Charge Fact"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Charge_Fact]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Fact\Charge Fact.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[member_no]"
+                      cachedDataType="i4"
+                      cachedName="member_no"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[member_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[member_no]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[provider_no]"
+                      cachedDataType="i4"
+                      cachedName="provider_no"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[provider_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[provider_no]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[category_no]"
+                      cachedDataType="i4"
+                      cachedName="category_no"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[category_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[category_no]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_amount]"
+                      cachedDataType="cy"
+                      cachedName="charge_amount"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_amt]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_time_key]"
+                      cachedDataType="i4"
+                      cachedName="charge_time_key"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_date_key]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[member_no]"
+                      dataType="i4"
+                      name="member_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[provider_no]"
+                      dataType="i4"
+                      name="provider_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[category_no]"
+                      dataType="i4"
+                      name="category_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_date_key]"
+                      dataType="i4"
+                      name="charge_date_key" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_amt]"
+                      dataType="cy"
+                      name="charge_amt" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Fact\Charge Fact.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Fact\Charge Source"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Charge Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[charge]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select top 9000
+min(c.member_no) member_no,
+min(c.provider_no) provider_no,
+min(c.category_no) category_no,
+min(c.statement_no) statement_no,
+min(c.charge_amt) charge_amount,
+min(t.time_key) charge_time_key
+from charge c, Credit_star.dbo.Time_Dim t
+where 
+datepart(dy, c.charge_dt) = datepart(dy, t.the_date)
+and
+datepart(yy, c.charge_dt) = datepart(yy, t.the_date)
+group by charge_no;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Fact\Charge Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[member_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[member_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[member_no]"
+                      name="member_no"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[provider_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[provider_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[provider_no]"
+                      name="provider_no"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[category_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[category_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[category_no]"
+                      name="category_no"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[statement_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[statement_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[statement_no]"
+                      name="statement_no"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amount]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]"
+                      name="charge_amount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_time_key]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]"
+                      name="charge_time_key"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[member_no]"
+                      dataType="i4"
+                      name="member_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[provider_no]"
+                      dataType="i4"
+                      name="provider_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[category_no]"
+                      dataType="i4"
+                      name="category_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[statement_no]"
+                      dataType="i4"
+                      name="statement_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amount]"
+                      dataType="cy"
+                      name="charge_amount" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_time_key]"
+                      dataType="i4"
+                      name="charge_time_key" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[member_no]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[member_no]"
+                      name="member_no" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[provider_no]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[provider_no]"
+                      name="provider_no" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[category_no]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[category_no]"
+                      name="category_no" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[statement_no]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[statement_no]"
+                      name="statement_no" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amount]"
+                      dataType="cy"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amount]"
+                      name="charge_amount" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_time_key]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_time_key]"
+                      name="charge_time_key" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Fact\Payment Fact"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Payment Fact"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Payment_Fact]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Fact\Payment Fact.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit_star]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].Columns[member_no]"
+                      cachedDataType="i4"
+                      cachedName="member_no"
+                      externalMetadataColumnId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[member_no]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[member_no]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].Columns[payment_amt]"
+                      cachedDataType="cy"
+                      cachedName="payment_amt"
+                      externalMetadataColumnId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[payment_amt]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_amt]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].Columns[payment_date_key]"
+                      cachedDataType="i4"
+                      cachedName="payment_date_key"
+                      externalMetadataColumnId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[payment_date_key]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_date_key]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[member_no]"
+                      dataType="i4"
+                      name="member_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[payment_date_key]"
+                      dataType="i4"
+                      name="payment_date_key" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input].ExternalColumns[payment_amt]"
+                      dataType="cy"
+                      name="payment_amt" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Fact\Payment Fact.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Fact.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Fact\Payment Source"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Payment Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select
+min(p.member_no) member_no,
+min(p.payment_amt) payment_amt,
+min(t.time_key) payment_date_key
+from payment p, Credit_star.dbo.Time_Dim t
+where 
+datepart(dy, p.payment_dt) = datepart(dy, t.the_date)
+and
+datepart(yy, p.payment_dt) = datepart(yy, t.the_date)
+group by payment_no;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Fact\Payment Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  connectionManagerRefId="Package.ConnectionManagers[MAPFAP6308\MSSQL2012.Credit]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[member_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[member_no]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[member_no]"
+                      name="member_no"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_amt]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[payment_amt]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_amt]"
+                      name="payment_amt"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_date_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[payment_date_key]"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].Columns[payment_date_key]"
+                      name="payment_date_key"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[member_no]"
+                      dataType="i4"
+                      name="member_no" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[payment_amt]"
+                      dataType="cy"
+                      name="payment_amt" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output].ExternalColumns[payment_date_key]"
+                      dataType="i4"
+                      name="payment_date_key" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[member_no]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[member_no]"
+                      name="member_no" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[payment_amt]"
+                      dataType="cy"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[payment_amt]"
+                      name="payment_amt" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[payment_date_key]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[payment_date_key]"
+                      name="payment_date_key" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Load Fact.Paths[OLE DB Source Output1]"
+              endId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Load Fact.Paths[OLE DB Source Output]"
+              endId="Package\Load Fact\Payment Fact.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Load Fact\Payment Source.Outputs[OLE DB Source Output]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -1071,6 +2291,14 @@ on p.region_no = r.region_no;</property>
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Load Dimesions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{824109FD-2695-47DF-A77A-41E6D7C5957A}"
+      DTS:From="Package\Load Dimesions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Load Fact" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -1083,7 +2311,7 @@ on p.region_no = r.region_no;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="165,42"
           Id="Package\Execute SQL Task"
@@ -1091,21 +2319,47 @@ on p.region_no = r.region_no;</property>
         <NodeLayout
           Size="155,42"
           Id="Package\Load Dimesions"
-          TopLeft="176,203" />
+          TopLeft="176,204" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="254,150">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,53"
+              EndConnector="0,54"
               Start="0,0"
-              End="0,45.5">
+              End="0,46.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,45.5" />
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Load Fact"
+          TopLeft="193,295" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="255,246">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,49"
+              Start="0,0"
+              End="0,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1124,14 +2378,52 @@ on p.region_no = r.region_no;</property>
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="155,42"
-          Id="Package\Load Dimesions\Member Source"
-          TopLeft="238,72" />
+          Id="Package\Load Dimesions\Provider Source"
+          TopLeft="246,160" />
         <NodeLayout
           Size="141,42"
           Id="Package\Load Dimesions\Member Dim"
           TopLeft="508,70" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Load Dimesions\Category Source"
+          TopLeft="235,253" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Load Dimesions\Member Source"
+          TopLeft="238,72" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Load Dimesions\Provider Dim"
+          TopLeft="508,159" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\Load Dimesions\Category Dim"
+          TopLeft="504,255" />
         <EdgeLayout
           Id="Package\Load Dimesions.Paths[OLE DB Source Output2]"
+          TopLeft="393,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="111,0"
+              Start="0,0"
+              End="103.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="103.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Dimesions.Paths[OLE DB Source Output]"
           TopLeft="393,92">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -1152,16 +2444,8 @@ on p.region_no = r.region_no;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="155,42"
-          Id="Package\Load Dimesions\Provider Source"
-          TopLeft="246,160" />
-        <NodeLayout
-          Size="142,42"
-          Id="Package\Load Dimesions\Provider Dim"
-          TopLeft="508,159" />
         <EdgeLayout
-          Id="Package\Load Dimesions.Paths[OLE DB Source Output1]"
+          Id="Package\Load Dimesions.Paths[OLE DB Source Output3]"
           TopLeft="401,180.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -1183,27 +2467,27 @@ on p.region_no = r.region_no;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="145,42"
-          Id="Package\Load Dimesions\Category Dim"
-          TopLeft="504,255" />
+          Size="140,42"
+          Id="Package\Load Dimesions\Time Source"
+          TopLeft="250,7" />
         <NodeLayout
-          Size="158,42"
-          Id="Package\Load Dimesions\Category Source"
-          TopLeft="235,253" />
+          Size="126,42"
+          Id="Package\Load Dimesions\Time Dim"
+          TopLeft="506,3" />
         <EdgeLayout
-          Id="Package\Load Dimesions.Paths[OLE DB Source Output]"
-          TopLeft="393,275">
+          Id="Package\Load Dimesions.Paths[OLE DB Source Output1]"
+          TopLeft="390,26">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="111,0"
+              EndConnector="116,0"
               Start="0,0"
-              End="103.5,0">
+              End="108.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="103.5,0" />
+                    End="108.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1216,15 +2500,10 @@ on p.region_no = r.region_no;</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Dimesions\Member Source">
+    design-time-name="Package\Load Dimesions\Provider Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -1242,10 +2521,23 @@ on p.region_no = r.region_no;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Dimesions\Provider Source">
+    design-time-name="Package\Load Dimesions\Category Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Dimesions\Member Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -1275,8 +2567,136 @@ on p.region_no = r.region_no;</property>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Load Fact">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load Fact\Charge Source"
+          TopLeft="231,121" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\Load Fact\Charge Fact"
+          TopLeft="483,121" />
+        <EdgeLayout
+          Id="Package\Load Fact.Paths[OLE DB Source Output1]"
+          TopLeft="381,142">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="102,0"
+              Start="0,0"
+              End="94.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="94.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="145,42"
+          Id="Package\Load Fact\Payment Fact"
+          TopLeft="489,219" />
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Load Fact\Payment Source"
+          TopLeft="228,224" />
+        <EdgeLayout
+          Id="Package\Load Fact.Paths[OLE DB Source Output]"
+          TopLeft="385,242.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="104,0"
+              Start="0,0"
+              End="96.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="96.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Dimesions\Category Source">
+    design-time-name="Package\Load Fact\Charge Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Dimesions\Time Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Dimesions\Time Dim">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Fact\Charge Fact">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Fact\Payment Fact">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Fact\Payment Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
