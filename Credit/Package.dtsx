@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="19"
-  DTS:VersionGUID="{C3E993AF-8BE0-44A5-A2BC-B4E9FE06F610}">
+  DTS:VersionBuild="31"
+  DTS:VersionGUID="{C06F42C3-F31E-4615-B7CF-741F1ABFF783}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -53,7 +53,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{05FF8236-F758-4FFF-BCF5-6C235C044AB4}"
-          SQLTask:SqlStatementSource="delete from Member_Dim;&#xA;delete from Provider_Dim;&#xA;delete from Category_Dim;&#xA;delete from Time_Dim;&#xA;delete from Payment_Fact;&#xA;delete from Charge_fact;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="delete from Member_Dim;&#xA;delete from Provider_Dim;&#xA;delete from Category_Dim;&#xA;delete from Time_Dim;&#xA;delete from Payment_Fact;&#xA;delete from Charge_Fact;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -1284,44 +1284,42 @@ on p.region_no = r.region_no;</property>
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select distinct
-  the_date = min(c.charge_dt),
-  day_of_week = datepart(dw, min(c.charge_dt)),
-  month = datepart(mm, min(c.charge_dt)),
-  year = datepart(yy, min(c.charge_dt)),
-  quarter = datepart(qq, min(c.charge_dt)),
-  day_of_year= datepart(dy, min(c.charge_dt)),
-  week_of_year= datepart(ww, min(c.charge_dt)),
+  the_date = c.charge_dt,
+  day_of_week = datepart(dw, c.charge_dt),
+  month = datepart(mm, c.charge_dt),
+  year = datepart(yy, c.charge_dt),
+  quarter = datepart(qq, c.charge_dt),
+  day_of_year= datepart(dy, c.charge_dt),
+  week_of_year= datepart(ww, c.charge_dt),
   holiday = 'N',
-weekend = case datepart(dw, min(c.charge_dt))
+weekend = case datepart(dw, c.charge_dt)
 when 1  then 'Y'
 when 7 then 'Y'
 else 'N'
 end,
-year_month = datename(month, min(c.charge_dt)) + '_' + datename(year, min(c.charge_dt))
+year_month = datename(month, c.charge_dt) + '_' + datename(year, c.charge_dt)
 from charge c
 where c.charge_dt is not null
-group by datepart(dy, c.charge_dt), datepart(yy, c.charge_dt)
 
 union
 
 select distinct
-  the_date = min(p.payment_dt),
-  day_of_week = datepart(dw, min(p.payment_dt)),
-  month = datepart(mm, min(p.payment_dt)),
-  year = datepart(yy, min(p.payment_dt)),
-  quarter = datepart(qq, min(p.payment_dt)),
-  day_of_year= datepart(dy, min(p.payment_dt)),
-  week_of_year= datepart(ww, min(p.payment_dt)),
+  the_date = p.payment_dt,
+  day_of_week = datepart(dw, p.payment_dt),
+  month = datepart(mm, p.payment_dt),
+  year = datepart(yy, p.payment_dt),
+  quarter = datepart(qq, p.payment_dt),
+  day_of_year= datepart(dy, p.payment_dt),
+  week_of_year= datepart(ww, p.payment_dt),
   holiday = 'N',
-weekend = case datepart(dw, min(p.payment_dt))
+weekend = case datepart(dw, p.payment_dt)
 when 1  then 'Y'
 when 7 then 'Y'
 else 'N'
 end,
-year_month = datename(month, min(p.payment_dt)) + '_' + datename(year, min(p.payment_dt))
+year_month = datename(month, p.payment_dt) + '_' + datename(year, p.payment_dt)
 from payment p
-where p.payment_dt is not null
-group by datepart(dy, p.payment_dt), datepart(yy, p.payment_dt);</property>
+where p.payment_dt is not null</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1711,17 +1709,23 @@ group by datepart(dy, p.payment_dt), datepart(yy, p.payment_dt);</property>
                       externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[category_no]"
                       lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[category_no]" />
                     <inputColumn
-                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_amount]"
-                      cachedDataType="cy"
-                      cachedName="charge_amount"
-                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_amt]"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]" />
-                    <inputColumn
-                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_time_key]"
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_date_key]"
                       cachedDataType="i4"
-                      cachedName="charge_time_key"
+                      cachedName="charge_date_key"
                       externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_date_key]"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]" />
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_date_key]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[charge_amt]"
+                      cachedDataType="cy"
+                      cachedName="charge_amt"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_amt]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amt]" />
+                    <inputColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].Columns[statement_no]"
+                      cachedDataType="i4"
+                      cachedName="statement_no"
+                      externalMetadataColumnId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[staement_no]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[statement_no]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1745,6 +1749,10 @@ group by datepart(dy, p.payment_dt), datepart(yy, p.payment_dt);</property>
                       refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[charge_amt]"
                       dataType="cy"
                       name="charge_amt" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Fact.Inputs[OLE DB Destination Input].ExternalColumns[staement_no]"
+                      dataType="i4"
+                      name="staement_no" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1798,19 +1806,15 @@ group by datepart(dy, p.payment_dt), datepart(yy, p.payment_dt);</property>
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select top 9000
-min(c.member_no) member_no,
-min(c.provider_no) provider_no,
-min(c.category_no) category_no,
-min(c.statement_no) statement_no,
-min(c.charge_amt) charge_amount,
-min(t.time_key) charge_time_key
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select
+c.member_no member_no,
+c.provider_no provider_no,
+t.time_key charge_date_key,
+c.category_no category_no,
+c.charge_amt charge_amt,
+c.statement_no statement_no
 from charge c, Credit_star.dbo.Time_Dim t
-where 
-datepart(dy, c.charge_dt) = datepart(dy, t.the_date)
-and
-datepart(yy, c.charge_dt) = datepart(yy, t.the_date)
-group by charge_no;</property>
+where c.charge_dt = t.the_date</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1874,6 +1878,24 @@ group by charge_no;</property>
                       name="category_no"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_date_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_date_key]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_date_key]"
+                      name="charge_date_key"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amt]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amt]"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amt]"
+                      name="charge_amt"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
                       refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[statement_no]"
                       dataType="i4"
                       errorOrTruncationOperation="Conversion"
@@ -1881,24 +1903,6 @@ group by charge_no;</property>
                       externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[statement_no]"
                       lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[statement_no]"
                       name="statement_no"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]"
-                      dataType="cy"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amount]"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_amount]"
-                      name="charge_amount"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_time_key]"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].Columns[charge_time_key]"
-                      name="charge_time_key"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -1916,17 +1920,17 @@ group by charge_no;</property>
                       dataType="i4"
                       name="category_no" />
                     <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_date_key]"
+                      dataType="i4"
+                      name="charge_date_key" />
+                    <externalMetadataColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amt]"
+                      dataType="cy"
+                      name="charge_amt" />
+                    <externalMetadataColumn
                       refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[statement_no]"
                       dataType="i4"
                       name="statement_no" />
-                    <externalMetadataColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_amount]"
-                      dataType="cy"
-                      name="charge_amount" />
-                    <externalMetadataColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Output].ExternalColumns[charge_time_key]"
-                      dataType="i4"
-                      name="charge_time_key" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1945,25 +1949,25 @@ group by charge_no;</property>
                       lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[provider_no]"
                       name="provider_no" />
                     <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_date_key]"
+                      dataType="i4"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_date_key]"
+                      name="charge_date_key" />
+                    <outputColumn
                       refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[category_no]"
                       dataType="i4"
                       lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[category_no]"
                       name="category_no" />
                     <outputColumn
+                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amt]"
+                      dataType="cy"
+                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amt]"
+                      name="charge_amt" />
+                    <outputColumn
                       refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[statement_no]"
                       dataType="i4"
                       lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[statement_no]"
                       name="statement_no" />
-                    <outputColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amount]"
-                      dataType="cy"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_amount]"
-                      name="charge_amount" />
-                    <outputColumn
-                      refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_time_key]"
-                      dataType="i4"
-                      lineageId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[charge_time_key]"
-                      name="charge_time_key" />
                     <outputColumn
                       refId="Package\Load Fact\Charge Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -2140,15 +2144,12 @@ group by charge_no;</property>
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select
-min(p.member_no) member_no,
-min(p.payment_amt) payment_amt,
-min(t.time_key) payment_date_key
+p.member_no member_no,
+p.payment_amt payment_amt,
+t.time_key payment_date_key
 from payment p, Credit_star.dbo.Time_Dim t
 where 
-datepart(dy, p.payment_dt) = datepart(dy, t.the_date)
-and
-datepart(yy, p.payment_dt) = datepart(yy, t.the_date)
-group by payment_no;</property>
+p.payment_dt = t.the_date;</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -2320,6 +2321,10 @@ group by payment_no;</property>
           Size="155,42"
           Id="Package\Load Dimesions"
           TopLeft="176,204" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Load Fact"
+          TopLeft="193,295" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="254,150">
@@ -2342,10 +2347,6 @@ group by payment_no;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="127,42"
-          Id="Package\Load Fact"
-          TopLeft="193,295" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="255,246">
@@ -2381,6 +2382,10 @@ group by payment_no;</property>
           Id="Package\Load Dimesions\Provider Source"
           TopLeft="246,160" />
         <NodeLayout
+          Size="140,42"
+          Id="Package\Load Dimesions\Time Source"
+          TopLeft="250,5" />
+        <NodeLayout
           Size="141,42"
           Id="Package\Load Dimesions\Member Dim"
           TopLeft="508,70" />
@@ -2400,6 +2405,32 @@ group by payment_no;</property>
           Size="145,42"
           Id="Package\Load Dimesions\Category Dim"
           TopLeft="504,255" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\Load Dimesions\Time Dim"
+          TopLeft="506,3" />
+        <EdgeLayout
+          Id="Package\Load Dimesions.Paths[OLE DB Source Output1]"
+          TopLeft="401,180.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="107,0"
+              Start="0,0"
+              End="99.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="99.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Dimesions.Paths[OLE DB Source Output]"
           TopLeft="393,275">
@@ -2414,6 +2445,28 @@ group by payment_no;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="103.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Dimesions.Paths[OLE DB Source Output3]"
+          TopLeft="390,25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="116,0"
+              Start="0,0"
+              End="108.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="108.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2444,63 +2497,19 @@ group by payment_no;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Load Dimesions.Paths[OLE DB Source Output1]"
-          TopLeft="401,180.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="107,0"
-              Start="0,0"
-              End="99.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="99.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="140,42"
-          Id="Package\Load Dimesions\Time Source"
-          TopLeft="250,7" />
-        <NodeLayout
-          Size="126,42"
-          Id="Package\Load Dimesions\Time Dim"
-          TopLeft="506,3" />
-        <EdgeLayout
-          Id="Package\Load Dimesions.Paths[OLE DB Source Output3]"
-          TopLeft="390,26">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="116,0"
-              Start="0,0"
-              End="108.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="108.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Load Dimesions\Provider Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Dimesions\Time Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2567,49 +2576,40 @@ group by payment_no;</property>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Dimesions\Time Dim">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Load Fact">
     <LayoutInfo>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="150,42"
-          Id="Package\Load Fact\Charge Source"
-          TopLeft="231,121" />
-        <NodeLayout
-          Size="137,42"
-          Id="Package\Load Fact\Charge Fact"
-          TopLeft="483,121" />
-        <EdgeLayout
-          Id="Package\Load Fact.Paths[OLE DB Source Output]"
-          TopLeft="381,142">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="102,0"
-              Start="0,0"
-              End="94.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="94.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          Size="157,42"
+          Id="Package\Load Fact\Payment Source"
+          TopLeft="228,224" />
         <NodeLayout
           Size="145,42"
           Id="Package\Load Fact\Payment Fact"
           TopLeft="489,219" />
         <NodeLayout
-          Size="157,42"
-          Id="Package\Load Fact\Payment Source"
-          TopLeft="228,224" />
+          Size="137,42"
+          Id="Package\Load Fact\Charge Fact"
+          TopLeft="469,124" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load Fact\Charge Source"
+          TopLeft="231,121" />
         <EdgeLayout
           Id="Package\Load Fact.Paths[OLE DB Source Output1]"
           TopLeft="385,242.5">
@@ -2632,24 +2632,33 @@ group by payment_no;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Fact.Paths[OLE DB Source Output]"
+          TopLeft="381,143.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="88,0"
+              Start="0,0"
+              End="80.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="80.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Fact\Charge Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Load Dimesions\Time Source">
+    design-time-name="Package\Load Fact\Payment Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2657,7 +2666,7 @@ group by payment_no;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Dimesions\Time Dim">
+    design-time-name="Package\Load Fact\Payment Fact">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2683,7 +2692,7 @@ group by payment_no;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Fact\Payment Fact">
+    design-time-name="Package\Load Fact\Charge Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2692,14 +2701,6 @@ group by payment_no;</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Load Fact\Payment Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
